@@ -8,6 +8,11 @@ import greenfoot.*;
  */
 public class Ant extends Creature
 {
+    
+    /** Current movement. Defined as the offset in x and y direction moved in each step. */
+    private int deltaX;
+    private int deltaY;
+    
     /**
      * Create an ant with a given home hill. The initial speed is zero (not moving).
      */
@@ -15,13 +20,16 @@ public class Ant extends Creature
     {
         setHomeHill(home);
     }
+    
 
     /**
      * Do what an ant's gotta do.
      */
     public void act()
     {
+        randomWalk();
         testFoodPile(); // This currently does not do anything
+        
     }
     
     private void testFoodPile()
