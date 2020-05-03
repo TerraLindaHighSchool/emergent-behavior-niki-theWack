@@ -35,13 +35,13 @@ public class Ant extends Creature
     private void testFoodPile()
     {
     
-    /*****************************************************************
+   
         Food food = (Food) getOneIntersectingObject(Food.class);
         if (food != null) 
         {
             food.removeCrumb();
         }
-    *****************************************************************/
+    
     
     }
 }
