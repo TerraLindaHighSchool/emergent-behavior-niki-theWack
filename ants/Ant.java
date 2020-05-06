@@ -39,6 +39,7 @@ public class Ant extends Creature
     
     private void searchForFood()
     {
+        
         randomWalk();
         checkForFood();
     }
@@ -64,7 +65,7 @@ public class Ant extends Creature
     {
         randomWalk();
         checkForFood(); // This currently does not do anything
-        
+        status();
     }
     
     private void checkForFood()
