@@ -24,10 +24,17 @@ public class Ant extends Creature
     public Ant(AntHill home)
     {
         setHomeHill(home);
+        
+        //phAvailable = MAX_PH_AVAILABLE;
+        //followTrailTimeRemaining = 0;
+        
+        image1 = getImage();
+        image2 = new GreenfootImage("ant-with-food.gif");
+    
     }
         
-         private boolean atHome()
-        {
+      private boolean atHome()
+    {
             if (getHomeHill() != null) {
                 return (Math.abs(getX() - getHomeHill().getX()) < 4) && 
                        (Math.abs(getY() - getHomeHill().getY()) < 4);
@@ -46,16 +53,22 @@ public class Ant extends Creature
     
     private void status()
     {
-        if(carryingFood = true && atHome())
-        {
-            setImage(image1);
-            carryingFood = false;
-            getHomeHill().countFood();
-        }
-        else
-        {
-            searchForFood();
-        }
+            if(carryingFood)
+            {
+                walkTowardsHome();
+                //handlePheromoneDrop();
+                
+                    if (atHome())
+                    {
+                    setImage(image1);
+                    carryingFood = false;
+                    getHomeHill().countFood();
+                }
+            }
+            else
+            {
+                searchForFood();
+            }
     }
 
     /**
@@ -71,13 +84,12 @@ public class Ant extends Creature
     private void checkForFood()
     {
     
-   
         Food food = (Food) getOneIntersectingObject(Food.class);
         if (food != null) 
         {
             food.removeCrumb();
+            carryingFood = true;
+            setImage(image2);
         }
-    
-    
     }
 }

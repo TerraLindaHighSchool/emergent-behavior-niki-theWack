@@ -8,8 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Pheromones extends Actor
 {
-    private int GreenfootImage;
-    private int MAX_INTENSITY;
+    private GreenfootImage image;
+    private final int MAX_INTENSITY = 180 ;
     private int intensity;
     /**
      * Act - do whatever the Pheromones wants to do. This method is called whenever
@@ -35,6 +35,12 @@ public class Pheromones extends Actor
     
     public void updateImage()
     {
-        //
+        int size = intensity / 3 + 5;
+        image = new GreenfootImage(size + 1, size +1);
+        image.setColor(new Color(225, 225, 225, intensity / 3 ));
+        image.fillOval(0, 0, size, size);
+        image.setColor(Color. GRAY);
+        image.fillRect(size/2, size/2, 2, 2);
+        setImage(image);
     }
 }
