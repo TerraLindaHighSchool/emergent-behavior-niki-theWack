@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
-
+import java.util.List;
 /**
  * The world where ants live.
  * 
@@ -20,6 +20,14 @@ public class AntWorld extends World
         setPaintOrder(Ant.class, AntHill.class);
         prepare();
     }
+    
+    public void act()
+    {
+        if (getObjects(Food.class).size() == 0)
+        {
+            Greenfoot.stop();
+        }
+    }
 
     /**
      * Prepare the world for the start of the program.
@@ -35,5 +43,7 @@ public class AntWorld extends World
         addObject(food,172,517);
         Food food2 = new Food();
         addObject(food2,520,332);
+        Food food3 = new Food();
+        addObject(food3,213,77);
     }
 }

@@ -10,11 +10,23 @@ public class Ant extends Creature
 {
     
     /** Current movement. Defined as the offset in x and y direction moved in each step. */
+    
+    private boolean carryingFood = false;
+    
+    private GreenfootImage image1 ;
+    private GreenfootImage image2 ;
+    
+    private final int MAX_PH_AVAILABLE = 16;
+    private final int TIME_FOLLOWING_TRAIL = 30;
+    private int phAvaible = MAX_PH_AVAILABLE; 
+    private int followTrailTimeRemaining = 0;
+  
+    
+    
+    
     private int deltaX;
     private int deltaY;
-    private boolean carryingFood;
-    private GreenfootImage image1 = getImage();
-    private GreenfootImage image2 = new GreenfootImage("ant-with-food.gif");
+    //private boolean carryingFood;
     
     
     
@@ -24,10 +36,6 @@ public class Ant extends Creature
     public Ant(AntHill home)
     {
         setHomeHill(home);
-        
-        //phAvailable = MAX_PH_AVAILABLE;
-        //followTrailTimeRemaining = 0;
-        
         image1 = getImage();
         image2 = new GreenfootImage("ant-with-food.gif");
     
@@ -42,13 +50,25 @@ public class Ant extends Creature
             else {
                 return false;
         }
+        
     }
     
     private void searchForFood()
     {
-        
-        randomWalk();
+        if(followTrailTimeRemaining == 0)
+        {
+            walkTowardsPheromoneCenter();
+            randomWalk();
+            
+        }
+        else
+        {
+            followTrailTimeRemaining--;
+            walkAwayFromHome();
+            
+        }
         checkForFood();
+        
     }
     
     private void status()
@@ -58,19 +78,65 @@ public class Ant extends Creature
                 walkTowardsHome();
                 //handlePheromoneDrop();
                 
-                    if (atHome())
-                    {
-                    setImage(image1);
-                    carryingFood = false;
-                    getHomeHill().countFood();
-                }
+                 if (atHome())
+                 {
+                        setImage(image1);
+                        carryingFood = false;
+                        getHomeHill().countFood();
+                        
+                 }
             }
             else
             {
                 searchForFood();
+                
             }
     }
 
+    private void handlePheromoneDrop ()
+    {
+         if ( MAX_PH_AVAILABLE == 16 )
+        {
+            new Pheromones();
+            Pheromones ph = new Pheromones ();
+            getWorld().addObject(ph, getX(), getY());
+            phAvaible = 0;
+        }
+        else
+        {
+            phAvaible++;
+        }
+        status();
+        
+    }
+    
+    private boolean smellsPheromone()
+    {
+        if ( isTouching(Pheromones.class) )
+        {
+           return(true);
+        }
+        else
+        {
+            return(false);
+        }
+     
+    }
+    
+    private void walkTowardsPheromoneCenter()
+    {
+        Pheromones pheromones = (Pheromones) getOneIntersectingObject(Pheromones.class);
+        if (pheromones != null) 
+        {
+            headTowards(pheromones);
+            if(pheromones.getX() == getX() && pheromones.getY() == getY())
+            {
+                followTrailTimeRemaining = TIME_FOLLOWING_TRAIL;
+            }
+        }
+        //handlePheromoneDrop();
+    }
+    
     /**
      * Do what an ant's gotta do.
      */
@@ -79,6 +145,7 @@ public class Ant extends Creature
         randomWalk();
         checkForFood(); // This currently does not do anything
         status();
+        //handlePheromoneDrop();
     }
     
     private void checkForFood()
@@ -91,5 +158,6 @@ public class Ant extends Creature
             carryingFood = true;
             setImage(image2);
         }
+        
     }
 }
