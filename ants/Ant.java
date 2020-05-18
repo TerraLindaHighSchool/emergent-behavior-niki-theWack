@@ -18,7 +18,7 @@ public class Ant extends Creature
     
     private final int MAX_PH_AVAILABLE = 16;
     private final int TIME_FOLLOWING_TRAIL = 30;
-    private int phAvaible = MAX_PH_AVAILABLE; 
+    private int phAvailable = MAX_PH_AVAILABLE; 
     private int followTrailTimeRemaining = 0;
   
     
@@ -36,6 +36,10 @@ public class Ant extends Creature
     public Ant(AntHill home)
     {
         setHomeHill(home);
+        
+        phAvailable = MAX_PH_AVAILABLE;
+        followTrailTimeRemaining = 0;
+        
         image1 = getImage();
         image2 = new GreenfootImage("ant-with-food.gif");
     
@@ -73,10 +77,10 @@ public class Ant extends Creature
     
     private void status()
     {
-            if(carryingFood)
+            if(carryingFood == true)
             {
+                handlePheromoneDrop();
                 walkTowardsHome();
-                //handlePheromoneDrop();
                 
                  if (atHome())
                  {
@@ -100,13 +104,13 @@ public class Ant extends Creature
             new Pheromones();
             Pheromones ph = new Pheromones ();
             getWorld().addObject(ph, getX(), getY());
-            phAvaible = 0;
+            phAvailable = 0;
         }
         else
         {
-            phAvaible++;
+            phAvailable++;
         }
-        status();
+        //status();
         
     }
     
